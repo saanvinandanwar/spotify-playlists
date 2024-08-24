@@ -17,8 +17,8 @@ def login():
     auth_url = create_spotify_oauth().get_authorize_url() #will generate an authorization url 
     return redirect(auth_url)
 
-@app.route('/redirect')
-def redirect_page(): #calls this function when we hit the redirect url from the first route 
+@app.route('/callback')
+def callback(): #calls this function when we hit the redirect url from the first route 
     session.clear() #clears any existing sessions and data 
     code = request.args.get('code')
     token_info = create_spotify_oauth().get_access_token(code) #get_access_token method exchanges auth code for a token 
@@ -41,7 +41,7 @@ def get_token():
     token_info = session.get(TOKEN_INFO, None) #retrieves the token 
     #if token doesn't exist, redirect to login with oauth 
     if not token_info:
-        redirect(url_for('login', external=False))
+        return redirect(url_for('login', external=False))
     
     now = int(time.time())
     is_expired = token_info('expires_at') - now < 60 #checking 60 seconds, if it happens to expire soon 
@@ -55,8 +55,8 @@ def create_spotify_oauth(): #function to create spotify oauth
     #get client id from spotify dashboard
     return SpotifyOAuth(client_id = "a72f8461ef054ec09214622684f1ecdd",
                         client_secret = "b5df371313104a5db231fb7bc4fadba6",
-                        redirect_uri = url_for('redirect_page', _external=True),
-                        scope = 'user-library-read playlist-modify-public playlist-modify-project' ) #project specific
+                        redirect_uri = url_for('callback', _external=True),
+                        scope = 'user-library-read playlist-modify-public playlist-modify-private' ) #project specific
 
 
 app.run(debug=True)
