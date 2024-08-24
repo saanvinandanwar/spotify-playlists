@@ -1,3 +1,9 @@
+#THIS ONLY WORKS IF DISCOVER WEEKLY IS SHOWN ON YOUR PROFILE 
+#WANT TO LEARN ABOUT FOLDER MANIPULATION TOO 
+#HOW CAN I DO IF ITS NOT IN MY PROFILE AND PUBLIC, AND SAVE STUFF TO A FOLDER 
+
+#date - august 23rd, 2024
+
 import spotipy
 import time 
 import webbrowser
@@ -35,7 +41,37 @@ def save_discover_weekly(): #called when we go to this route
     except: 
         print("User not logged in")
         return redirect('/')
-    return("OAUTH SUCCESSFUL")
+    #return("OAUTH SUCCESSFUL")
+
+    #PART THAT SAVES THE DISCOVER WEEKLY TO THE BIG WEEKLY PLAYLIST
+    sp = spotipy.Spotify(auth=token_info['access_token'])
+    user_id = sp.current_user()['id']
+    
+    discover_weekly_playlist_id = None
+    saved_weekly_playlist_id = None #since it didn't exist for the first time 
+
+    current_playlists = sp.current_user_playlists() #going to return the entire object
+    #want to loop through the list and find playlist where the name matches
+    for playlist in current_playlists['items']:
+        print(f"Found playlist: {playlist['name']}")
+        if (playlist['name'] == "Discover Weekly"):
+            discover_weekly_playlist_id = playlist['id'] #finds id for discover weekly playlist
+        if (playlist['name'] == "Saved Weekly"): #does same for saved weekly, assuming its made
+            saved_weekly_playlist_id = playlist['id']
+    if not discover_weekly_playlist_id:  
+        return 'Discover Weekly key not found'
+    if not saved_weekly_playlist_id: #create new playlist 
+        new_playlist = sp.user_playlist_create(user_id, "Saved Weekly", public=True)
+        saved_weekly_playlist_id = new_playlist['id'] #any empty playlist 
+        
+    
+    discover_weekly_playlist = sp.playlist_items(discover_weekly_playlist_id)
+    song_uris = [] #want to take tracks from discover weekly and add to list
+    for song in discover_weekly_playlist['items']: #looping through each song
+        song_uri = song['track']['uri'] #targeting song by uri
+        song_uris.append(song_uri)
+    sp.playlist_add_items(saved_weekly_playlist_id, song_uris)
+    return("SUCCESS!!!!")
 
 
 def get_token():

@@ -28,5 +28,7 @@ to run >> python3 spotifyWeekly.py
 
 
 incase the port is busy, go to terminal 
- - to see if anyhting is running >> lsof -i :<port number>    ex. lsof -i :5000
- - to delete >> kill -9 <process id number>
+ to see if anyhting is running >> lsof -i :< port number>    ex. lsof -i :5000
+ to delete >> kill -9 < process id number>
+
+ future steps: take local flask and hosting it somewhere -- will allow it to run in the background and run on its own -> fully automated >> can also create a task runner to do this every week 
