@@ -1,5 +1,4 @@
 # spotify-weekly-playlists
-
 Automatically adds Discovery Weekly songs to one playlist
 
 Steps to Code -- Program Planning
@@ -19,6 +18,14 @@ OAuth -- need to implement it and have the user's permission
 
 also need an OAuth token
 can go to Spotify Api console to see what data returns look like >> what kind of info we get back on the playlists >> play around with it, get more familiar
-Installing packages/modules
 
+
+Installing packages/modules
 terminal >> /usr/bin/python3 pip install <package_name>
+
+to run >> python3 spotifyWeekly.py
+
+
+incase the port is busy, go to terminal 
+ - to see if anyhting is running >> lsof -i :<port number>    ex. lsof -i :5000
+ - to delete >> kill -9 <process id number>
