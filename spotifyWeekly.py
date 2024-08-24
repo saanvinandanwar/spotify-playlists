@@ -1,5 +1,6 @@
 import spotipy
 import time 
+import webbrowser
 from spotipy.oauth2 import SpotifyOAuth 
 
 from flask import Flask, request, url_for, session, redirect
@@ -44,7 +45,7 @@ def get_token():
         return redirect(url_for('login', external=False))
     
     now = int(time.time())
-    is_expired = token_info('expires_at') - now < 60 #checking 60 seconds, if it happens to expire soon 
+    is_expired = token_info['expires_at'] - now < 60 #checking 60 seconds, if it happens to expire soon 
     if (is_expired):
         spotify_oauth = create_spotify_oauth()
         token_info = spotify_oauth.refresh_access_token(token_info['refresh_token'])
@@ -58,5 +59,6 @@ def create_spotify_oauth(): #function to create spotify oauth
                         redirect_uri = url_for('callback', _external=True),
                         scope = 'user-library-read playlist-modify-public playlist-modify-private' ) #project specific
 
-
-app.run(debug=True)
+if __name__ == '__main__':
+    webbrowser.open('http://127.0.0.1:5000')
+    app.run(debug=True)
