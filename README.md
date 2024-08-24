@@ -28,5 +28,5 @@ to run >> python3 spotifyWeekly.py
 
 
 incase the port is busy, go to terminal 
- - to see if anyhting is running >> lsof -i :<port number>    ex. lsof -i :5000
- - to delete >> kill -9 <process id number>
+ to see if anyhting is running >> lsof -i :< port number >    ex. lsof -i :5000
+ to delete >> kill -9 < process id number >
