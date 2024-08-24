@@ -1,4 +1,4 @@
-# spotify-weekly-playlists
+# spotify-playlists
 
 Automatically adds Discovery Weekly songs to one playlist
 
